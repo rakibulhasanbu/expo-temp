@@ -1,3 +1,5 @@
+export type BrandActiveStatus = "active" | "inactive";
+
 export type Brand = {
   id: string;
   name: string;
@@ -5,19 +7,9 @@ export type Brand = {
   shopId: string;
   createdAt: string;
   updatedAt: string;
-  activeStatus: "active" | "inactive";
+  activeStatus: BrandActiveStatus;
 };
 
-export type BrandListMeta = {
-  page: number;
-  limit: number;
-  total: number;
-};
+export type CreateBrandPayload = Pick<Brand, "name" | "imgURL" | "shopId">;
 
-export type BrandListResponse = {
-  statusCode: number;
-  success: boolean;
-  message: string;
-  meta: BrandListMeta;
-  data: Brand[];
-};
+export type UpdateBrandPayload = Partial<CreateBrandPayload>;

@@ -1,7 +1,7 @@
 import { ActivityIndicator, FlatList, RefreshControl, Text, View } from "react-native";
 
 import { BrandCard } from "@/features/brand/components/brand-card";
-import { useBrandsQuery } from "@/features/brand/hooks/use-brands-query";
+import { useBrandsQuery } from "@/features/brand/hooks/use-brand-queries";
 import type { Brand } from "@/features/brand/types";
 
 export default function BrandScreen() {
