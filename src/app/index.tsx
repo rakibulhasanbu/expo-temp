@@ -13,6 +13,12 @@ export default function Index() {
     >
       <Text className="text-2xl font-medium text-red-500">Letss goo working finee</Text>
 
+      <Link href="/brands" asChild>
+        <Pressable className="rounded-lg bg-blue-600 px-6 py-3">
+          <Text className="text-base font-medium text-white">Go to Brands</Text>
+        </Pressable>
+      </Link>
+
       <Link href="/sign-in" asChild>
         <Pressable className="rounded-lg bg-blue-600 px-6 py-3">
           <Text className="text-base font-medium text-white">Go to Sign In</Text>
