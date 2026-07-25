@@ -27,6 +27,8 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(public)" />
+
         <Stack.Protected guard={status === "authenticated"}>
           <Stack.Screen name="(protected)" />
         </Stack.Protected>
