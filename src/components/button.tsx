@@ -1,9 +1,9 @@
 import { cn } from "@/utils/cn";
 import { cva, type VariantProps } from "class-variance-authority";
-import { Link } from "expo-router";
+import { Link, type Href } from "expo-router";
 import { Platform, Pressable } from "react-native";
 
-import { Text, TextClassContext } from "@/components/text";
+import { TextClassContext } from "@/components/text";
 
 const buttonVariants = cva(
   cn(
@@ -89,24 +89,26 @@ const buttonTextVariants = cva(
 
 type ButtonProps = React.ComponentProps<typeof Pressable> &
   React.RefAttributes<typeof Pressable> &
-  VariantProps<typeof buttonVariants> & { href?: string };
+  VariantProps<typeof buttonVariants> & { href?: Href };
 
 function Button({ className, variant, size, href, ...props }: ButtonProps) {
-  if (href) {
-    return (
-      <Link href={href} className={buttonVariants({ variant: "outline" })}>
-        <Text className={buttonTextVariants({ variant: "outline" })} {...props} />
-      </Link>
-    );
-  }
+  const button = (
+    <Pressable
+      className={cn(props.disabled && "opacity-50", buttonVariants({ variant, size }), className)}
+      role="button"
+      {...props}
+    />
+  );
 
   return (
     <TextClassContext.Provider value={buttonTextVariants({ variant, size })}>
-      <Pressable
-        className={cn(props.disabled && "opacity-50", buttonVariants({ variant, size }), className)}
-        role="button"
-        {...props}
-      />
+      {href ? (
+        <Link href={href} asChild>
+          {button}
+        </Link>
+      ) : (
+        button
+      )}
     </TextClassContext.Provider>
   );
 }
