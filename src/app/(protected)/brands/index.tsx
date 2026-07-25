@@ -1,9 +1,10 @@
 import { BrandCard } from "@/features/brand/components/brand-card";
 import { useBrandsQuery } from "@/features/brand/hooks/use-brand-queries";
 import type { Brand } from "@/features/brand/types";
-import { ProtectedLink } from "@/components/protected-link";
 import { Link } from "expo-router";
 import { ActivityIndicator, FlatList, Pressable, RefreshControl, Text, View } from "react-native";
+
+import { ProtectedLink } from "@/components/protected-link";
 
 export default function BrandScreen() {
   const { data, isPending, isError, error, isRefetching, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =

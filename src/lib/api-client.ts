@@ -1,6 +1,6 @@
+import { useAuthStore } from "@/store/auth-store";
 import { create, type AxiosError, type InternalAxiosRequestConfig } from "axios";
 
-import { useAuthStore } from "@/store/auth-store";
 import type { ApiResponse } from "@/types/api-types";
 
 export const apiClient = create({
@@ -18,18 +18,20 @@ type RetryableConfig = InternalAxiosRequestConfig & { _retry?: boolean };
 
 type RefreshTokensData = {
   accessToken: string;
-  refreshToken: string;
 };
 
 // De-dupes concurrent 401s behind a single in-flight refresh call.
 let refreshPromise: Promise<string> | null = null;
 
 const refreshAccessToken = async (refreshToken: string): Promise<string> => {
-  const { data } = await refreshClient.post<ApiResponse<RefreshTokensData>>("/auth/refresh", {
+  const { data } = await refreshClient.post<ApiResponse<RefreshTokensData>>("/auth/refresh-token", {
     refreshToken,
   });
 
-  await useAuthStore.getState().setSession(data.data);
+  await useAuthStore.getState().setSession({
+    accessToken: data.data.accessToken,
+    refreshToken,
+  });
 
   return data.data.accessToken;
 };
@@ -38,7 +40,7 @@ apiClient.interceptors.request.use((config) => {
   const { accessToken } = useAuthStore.getState();
 
   if (accessToken) {
-    config.headers.set("Authorization", `Bearer ${accessToken}`);
+    config.headers.set("Authorization", accessToken);
   }
 
   return config;
@@ -69,11 +71,11 @@ apiClient.interceptors.response.use(
       });
       const newAccessToken = await refreshPromise;
 
-      originalRequest.headers.set("Authorization", `Bearer ${newAccessToken}`);
+      originalRequest.headers.set("Authorization", newAccessToken);
       return apiClient(originalRequest);
     } catch (refreshError) {
       await useAuthStore.getState().signOut();
       return Promise.reject(refreshError);
     }
-  },
+  }
 );
