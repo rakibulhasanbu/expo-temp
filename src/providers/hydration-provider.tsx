@@ -9,11 +9,6 @@ type HydrationProviderProps = {
   children: ReactNode;
 };
 
-const storeHydrators: (() => Promise<void>)[] = [
-  () => useAuthStore.getState().hydrate(),
-  () => useThemeStore.getState().hydrate(),
-];
-
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
 export const HydrationProvider = ({ children }: HydrationProviderProps) => {
@@ -21,7 +16,8 @@ export const HydrationProvider = ({ children }: HydrationProviderProps) => {
   const themeHydrated = useThemeStore((state) => state.hydrated);
 
   useEffect(() => {
-    storeHydrators.forEach((hydrate) => hydrate());
+    useAuthStore.getState().hydrate();
+    useThemeStore.getState().hydrate();
   }, []);
 
   useEffect(() => {
