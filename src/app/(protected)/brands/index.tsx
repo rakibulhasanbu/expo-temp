@@ -1,6 +1,7 @@
 import { BrandCard } from "@/features/brand/components/brand-card";
 import { useBrandsQuery } from "@/features/brand/hooks/use-brand-queries";
 import type { Brand } from "@/features/brand/types";
+import { ProtectedLink } from "@/components/protected-link";
 import { Link } from "expo-router";
 import { ActivityIndicator, FlatList, Pressable, RefreshControl, Text, View } from "react-native";
 
@@ -27,11 +28,11 @@ export default function BrandScreen() {
   return (
     <View className="bg-background flex-1 py-10">
       <View className="mb-4 flex flex-row gap-4 px-6">
-        <Link href="/profile" asChild>
+        <ProtectedLink href="/profile" asChild>
           <Pressable className="w-1/2 rounded-lg bg-blue-600 px-6 py-3">
             <Text className="text-base font-medium text-white">Go to Profile</Text>
           </Pressable>
-        </Link>
+        </ProtectedLink>
 
         <Link href="/(auth)/sign-in" asChild>
           <Pressable className="w-1/2 rounded-lg bg-blue-600 px-6 py-3">

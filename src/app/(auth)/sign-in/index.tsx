@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isAxiosError } from "axios";
+import { router, useLocalSearchParams, type Href } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import { ActivityIndicator, Pressable, Text, TextInput, View } from "react-native";
 import { z } from "zod";
@@ -22,6 +23,7 @@ const getErrorMessage = (error: unknown): string => {
 
 export default function SignIn() {
   const signInMutation = useSignInMutation();
+  const { redirect } = useLocalSearchParams<{ redirect?: string }>();
 
   const {
     control,
@@ -36,7 +38,9 @@ export default function SignIn() {
   });
 
   const onSubmit = (values: SignInFormValues) => {
-    signInMutation.mutate(values);
+    signInMutation.mutate(values, {
+      onSuccess: () => router.replace((redirect ?? "/") as Href),
+    });
   };
 
   return (
