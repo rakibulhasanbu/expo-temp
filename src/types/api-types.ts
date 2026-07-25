@@ -14,3 +14,9 @@ export type ApiResponse<TData> = {
 export type ApiListResponse<TData> = ApiResponse<TData[]> & {
   meta: ApiMeta;
 };
+
+export const DEFAULT_PAGE_LIMIT = 10;
+
+export enum QueryKeys {
+  BRANDS = "brands",
+}

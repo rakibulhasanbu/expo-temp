@@ -1,9 +1,11 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
+import { QueryKeys } from "@/types/api-types";
+
 import { fetchBrand, fetchBrands } from "../api/brand-api";
 
 export const brandKeys = {
-  all: ["brands"] as const,
+  all: [QueryKeys.BRANDS] as const,
   list: () => [...brandKeys.all, "list"] as const,
   detail: (id: string) => [...brandKeys.all, "detail", id] as const,
 };

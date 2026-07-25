@@ -1,13 +1,11 @@
+import { DEFAULT_PAGE_LIMIT, type ApiListResponse, type ApiResponse } from "@/types/api-types";
 import { apiClient } from "@/lib/api-client";
-import type { ApiListResponse, ApiResponse } from "@/types/api-types";
 
 import type { Brand, CreateBrandPayload, UpdateBrandPayload } from "../types";
 
-export const BRAND_PAGE_LIMIT = 10;
-
 export const fetchBrands = async (page: number): Promise<ApiListResponse<Brand>> => {
   const { data } = await apiClient.get<ApiListResponse<Brand>>("/brand", {
-    params: { page, limit: BRAND_PAGE_LIMIT },
+    params: { page, limit: DEFAULT_PAGE_LIMIT },
   });
 
   return data;
