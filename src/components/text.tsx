@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import { cn } from "@/utils/cn";
-import { Slot } from "@rn-primitives/slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Platform, Text as RNText, type Role } from "react-native";
 
@@ -65,18 +64,12 @@ const TextClassContext = React.createContext<string | undefined>(undefined);
 
 function Text({
   className,
-  asChild = false,
   variant = "default",
   ...props
-}: React.ComponentProps<typeof RNText> &
-  React.RefAttributes<typeof RNText> &
-  TextVariantProps & {
-    asChild?: boolean;
-  }) {
+}: React.ComponentProps<typeof RNText> & React.RefAttributes<RNText> & TextVariantProps) {
   const textClass = React.useContext(TextClassContext);
-  const Component = asChild ? Slot : RNText;
   return (
-    <Component
+    <RNText
       className={cn(textVariants({ variant }), textClass, className)}
       role={variant ? ROLE[variant] : undefined}
       aria-level={variant ? ARIA_LEVEL[variant] : undefined}

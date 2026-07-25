@@ -53,6 +53,7 @@
     "@tanstack/eslint-plugin-query": "^5.101.4",
     "@types/react": "~19.1.0",
     "babel-preset-expo": "^54.0.12",
+    "class-variance-authority": "^0.7.1",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",
     "prettier-plugin-tailwindcss": "^0.5.14",
