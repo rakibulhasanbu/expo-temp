@@ -1,50 +1,97 @@
-# Welcome to your Expo app 👋
+# Expo Template
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A production-ready starter for building universal apps with **Expo Router**, **NativeWind (Tailwind)**, **TanStack Query**, and **Zustand** — with an opinionated project structure, JWT auth (with automatic token refresh), and a small set of themeable UI primitives already wired up.
 
-## Get started
+## Features
 
-1. Install dependencies
+- **File-based routing** with [Expo Router](https://docs.expo.dev/router/introduction/), including grouped `(public)`, `(auth)`, and `(protected)` route segments
+- **Authentication** flow with secure token storage (`expo-secure-store`) and automatic access-token refresh on 401s via an Axios interceptor
+- **Data fetching** with TanStack Query, split into read/write hooks per feature
+- **State management** with Zustand (auth, theme)
+- **Styling** with NativeWind / Tailwind CSS, light & dark themes, and `class-variance-authority` for component variants
+- **Forms** with React Hook Form + Zod validation
+- **Reusable UI primitives** — `Button`, `Text`, `Label`, `FormInput`, `FormError`, `ThemeSwitcher`, `ProtectedLink`
+- **Typed, feature-first architecture** — see [AGENTS.md](AGENTS.md) for the full folder conventions
 
-   ```bash
-   npm install
-   ```
+## Tech Stack
 
-2. Start the app
+| Category   | Library                                  |
+| ---------- | ----------------------------------------- |
+| Framework  | Expo SDK 54, React Native 0.81, React 19  |
+| Routing    | Expo Router                               |
+| Styling    | NativeWind (Tailwind CSS)                 |
+| Data       | TanStack Query, Axios                     |
+| State      | Zustand                                   |
+| Forms      | React Hook Form, Zod                      |
+| Language   | TypeScript                                |
 
-   ```bash
-   npx expo start
-   ```
+## Getting Started
 
-In the output, you'll find options to open the app in a
+### Prerequisites
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- Node.js 18+
+- [pnpm](https://pnpm.io/)
+- Expo Go app (for quick testing) or an Android/iOS simulator
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+### Installation
 
 ```bash
-npm run reset-project
+pnpm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Environment variables
 
-## Learn more
+Copy the example env file and set your API base URL:
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+cp .env.example .env.local
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```
+EXPO_PUBLIC_API_BASE_URL=https://example.com/api
+```
 
-## Join the community
+### Run the app
 
-Join our community of developers creating universal apps.
+```bash
+pnpm start       # start the dev server
+pnpm android     # run on Android
+pnpm ios         # run on iOS
+pnpm web         # run in the browser
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Project Structure
+
+```
+src/
+├── app/                 # expo-router routes only ((public), (auth), (protected))
+├── components/          # small, generic, reusable UI primitives
+├── features/<feature>/  # page-level feature modules
+│   ├── api/              # axios calls
+│   ├── components/       # feature-specific components
+│   ├── hooks/             # TanStack Query hooks (queries / mutations)
+│   └── types.ts
+├── hooks/               # shared/global hooks
+├── lib/                 # shared/global lib code (api client, query client, storage)
+├── providers/           # app-level providers
+├── store/               # Zustand stores
+├── types/               # shared/global types (API envelope, query keys)
+└── utils/               # shared/global utility functions
+```
+
+Full naming and architecture conventions are documented in [AGENTS.md](AGENTS.md).
+
+## Scripts
+
+| Script          | Description                                  |
+| --------------- | --------------------------------------------- |
+| `pnpm start`    | Start the Expo dev server                     |
+| `pnpm android`  | Run on an Android device/emulator             |
+| `pnpm ios`      | Run on an iOS simulator                       |
+| `pnpm web`      | Run in the browser                            |
+| `pnpm lint`     | Run ESLint                                    |
+| `pnpm restart`  | Clean caches, reinstall deps, restart the app |
+
+## License
+
+This project is provided as a free template — use it for personal or commercial projects.
