@@ -1,8 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { isAxiosError } from "axios";
 import { Controller, useForm } from "react-hook-form";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, Pressable, Text, TextInput, View } from "react-native";
 import { z } from "zod";
+
+import { useSignInMutation } from "@/features/auth/hooks/use-auth-mutations";
 
 const signInSchema = z.object({
   email: z.string().min(1, "Email is required").email("Enter a valid email"),
@@ -11,8 +13,15 @@ const signInSchema = z.object({
 
 type SignInFormValues = z.infer<typeof signInSchema>;
 
+const getErrorMessage = (error: unknown): string => {
+  if (isAxiosError(error)) {
+    return error.response?.data?.message ?? "Something went wrong. Please try again.";
+  }
+  return "Something went wrong. Please try again.";
+};
+
 export default function SignIn() {
-  const [submittedValues, setSubmittedValues] = useState<SignInFormValues | null>(null);
+  const signInMutation = useSignInMutation();
 
   const {
     control,
@@ -27,7 +36,7 @@ export default function SignIn() {
   });
 
   const onSubmit = (values: SignInFormValues) => {
-    setSubmittedValues(values);
+    signInMutation.mutate(values);
   };
 
   return (
@@ -71,16 +80,17 @@ export default function SignIn() {
         {errors.password && <Text className="mt-1 text-sm text-red-500">{errors.password.message}</Text>}
       </View>
 
-      <Pressable onPress={handleSubmit(onSubmit)} className="mt-2 rounded-lg bg-blue-600 py-3">
+      <Pressable
+        onPress={handleSubmit(onSubmit)}
+        disabled={signInMutation.isPending}
+        className="mt-2 flex-row items-center justify-center gap-2 rounded-lg bg-blue-600 py-3 disabled:opacity-70"
+      >
+        {signInMutation.isPending && <ActivityIndicator color="white" />}
         <Text className="text-center text-base font-medium text-white">Submit</Text>
       </Pressable>
 
-      {submittedValues && (
-        <View className="mt-6 rounded-lg border border-gray-200 bg-gray-50 p-4">
-          <Text className="mb-2 font-medium">Submitted values:</Text>
-          <Text className="text-gray-700">Email: {submittedValues.email}</Text>
-          <Text className="text-gray-700">Password: {submittedValues.password}</Text>
-        </View>
+      {signInMutation.isError && (
+        <Text className="text-center text-sm text-red-500">{getErrorMessage(signInMutation.error)}</Text>
       )}
     </View>
   );

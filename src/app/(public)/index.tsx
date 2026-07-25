@@ -19,7 +19,13 @@ export default function Index() {
         </Pressable>
       </Link>
 
-      <Link href="/sign-in" asChild>
+      <Link href="/profile" asChild>
+        <Pressable className="rounded-lg bg-blue-600 px-6 py-3">
+          <Text className="text-base font-medium text-white">Go to Profile</Text>
+        </Pressable>
+      </Link>
+
+      <Link href="/(auth)/sign-in" asChild>
         <Pressable className="rounded-lg bg-blue-600 px-6 py-3">
           <Text className="text-base font-medium text-white">Go to Sign In</Text>
         </Pressable>

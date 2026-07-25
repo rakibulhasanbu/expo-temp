@@ -1,21 +1,12 @@
-import { ActivityIndicator, FlatList, RefreshControl, Text, View } from "react-native";
-
 import { BrandCard } from "@/features/brand/components/brand-card";
 import { useBrandsQuery } from "@/features/brand/hooks/use-brand-queries";
 import type { Brand } from "@/features/brand/types";
+import { Link } from "expo-router";
+import { ActivityIndicator, FlatList, Pressable, RefreshControl, Text, View } from "react-native";
 
 export default function BrandScreen() {
-  const {
-    data,
-    isPending,
-    isError,
-    error,
-    isRefetching,
-    refetch,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useBrandsQuery();
+  const { data, isPending, isError, error, isRefetching, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useBrandsQuery();
 
   if (isPending) {
     return (
@@ -34,7 +25,20 @@ export default function BrandScreen() {
   }
 
   return (
-    <View className="flex-1 bg-white">
+    <View className="bg-background flex-1 py-10">
+      <View className="mb-4 flex flex-row gap-4 px-6">
+        <Link href="/profile" asChild>
+          <Pressable className="w-1/2 rounded-lg bg-blue-600 px-6 py-3">
+            <Text className="text-base font-medium text-white">Go to Profile</Text>
+          </Pressable>
+        </Link>
+
+        <Link href="/(auth)/sign-in" asChild>
+          <Pressable className="w-1/2 rounded-lg bg-blue-600 px-6 py-3">
+            <Text className="text-base font-medium text-white">Go to Sign In</Text>
+          </Pressable>
+        </Link>
+      </View>
       <FlatList<Brand>
         data={data.brands}
         keyExtractor={(brand) => brand.id}
