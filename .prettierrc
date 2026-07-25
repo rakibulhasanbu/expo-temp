@@ -3,7 +3,7 @@
   "semi": true,
   "trailingComma": "es5",
   "singleQuote": false,
-  "printWidth": 120,
+  "printWidth": 110,
   "tabWidth": 2,
   "bracketSpacing": true,
   "tailwindStylesheet": "./src/global.css",

@@ -1,7 +1,7 @@
 import { cn } from "@/utils/cn";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Link, type Href } from "expo-router";
-import { Platform, Pressable } from "react-native";
+import { ActivityIndicator, Platform, Pressable } from "react-native";
 
 import { TextClassContext } from "@/components/text";
 
@@ -87,17 +87,39 @@ const buttonTextVariants = cva(
   }
 );
 
-type ButtonProps = React.ComponentProps<typeof Pressable> &
-  React.RefAttributes<typeof Pressable> &
-  VariantProps<typeof buttonVariants> & { href?: Href };
+const buttonIndicatorVariants = cva("text-foreground", {
+  variants: {
+    variant: {
+      default: "text-primary-foreground",
+      destructive: "text-white",
+      outline: "",
+      secondary: "",
+      ghost: "",
+      link: "text-primary",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+  },
+});
 
-function Button({ className, variant, size, href, ...props }: ButtonProps) {
+type ButtonProps = Omit<React.ComponentProps<typeof Pressable>, "children"> &
+  React.RefAttributes<typeof Pressable> &
+  VariantProps<typeof buttonVariants> & { href?: Href; loading?: boolean; children?: React.ReactNode };
+
+function Button({ className, variant, size, href, loading, disabled, children, ...props }: ButtonProps) {
+  const isDisabled = Boolean(disabled) || Boolean(loading);
+
   const button = (
     <Pressable
-      className={cn(props.disabled && "opacity-50", buttonVariants({ variant, size }), className)}
+      className={cn(isDisabled && "opacity-50", buttonVariants({ variant, size }), className)}
       role="button"
+      disabled={isDisabled}
       {...props}
-    />
+    >
+      {loading ? <ActivityIndicator className={buttonIndicatorVariants({ variant })} /> : null}
+      {children}
+    </Pressable>
   );
 
   return (
@@ -113,5 +135,5 @@ function Button({ className, variant, size, href, ...props }: ButtonProps) {
   );
 }
 
-export { Button, buttonTextVariants, buttonVariants };
+export { Button, buttonIndicatorVariants, buttonTextVariants, buttonVariants };
 export type { ButtonProps };
