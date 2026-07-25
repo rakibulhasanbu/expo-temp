@@ -9,7 +9,14 @@ import {
   setRefreshToken,
 } from "@/lib/secure-storage";
 
-export type AuthStatus = "idle" | "authenticated" | "unauthenticated";
+export const AuthStatus = {
+  Idle: "idle",
+  Authenticated: "authenticated",
+  Unauthenticated: "unauthenticated",
+} as const;
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare -- intentional value+type companion pattern
+export type AuthStatus = (typeof AuthStatus)[keyof typeof AuthStatus];
 
 type AuthTokens = {
   accessToken: string;
@@ -26,7 +33,7 @@ type AuthState = {
 };
 
 export const useAuthStore = create<AuthState>((set) => ({
-  status: "idle",
+  status: AuthStatus.Idle,
   accessToken: null,
   refreshToken: null,
 
@@ -34,19 +41,19 @@ export const useAuthStore = create<AuthState>((set) => ({
     const [accessToken, refreshToken] = await Promise.all([getAccessToken(), getRefreshToken()]);
 
     if (accessToken && refreshToken) {
-      set({ accessToken, refreshToken, status: "authenticated" });
+      set({ accessToken, refreshToken, status: AuthStatus.Authenticated });
     } else {
-      set({ accessToken: null, refreshToken: null, status: "unauthenticated" });
+      set({ accessToken: null, refreshToken: null, status: AuthStatus.Unauthenticated });
     }
   },
 
   setSession: async ({ accessToken, refreshToken }) => {
     await Promise.all([setAccessToken(accessToken), setRefreshToken(refreshToken)]);
-    set({ accessToken, refreshToken, status: "authenticated" });
+    set({ accessToken, refreshToken, status: AuthStatus.Authenticated });
   },
 
   signOut: async () => {
     await Promise.all([deleteAccessToken(), deleteRefreshToken()]);
-    set({ accessToken: null, refreshToken: null, status: "unauthenticated" });
+    set({ accessToken: null, refreshToken: null, status: AuthStatus.Unauthenticated });
   },
 }));

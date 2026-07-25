@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { QueryKeys } from "@/types/api-types";
-import { useAuthStore } from "@/store/auth-store";
+import { AuthStatus, useAuthStore } from "@/store/auth-store";
 
 import { fetchCurrentUser } from "../api/auth-api";
 
@@ -17,6 +17,6 @@ export const useCurrentUserQuery = () => {
     queryKey: authKeys.me(),
     queryFn: fetchCurrentUser,
     select: (data) => data.data,
-    enabled: status === "authenticated",
+    enabled: status === AuthStatus.Authenticated,
   });
 };
