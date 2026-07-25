@@ -1,5 +1,5 @@
 {
-  "name": "expo-templ",
+  "name": "expo-temp",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
@@ -8,7 +8,7 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "restart": "rm -rf .expo && rm -rf node_modules && rm -rf .pnpm-lock.yaml && pnpm i && pnpm run start"
+    "restart": "rm -rf .expo && rm -rf node_modules && rm -rf pnpm-lock.yaml && pnpm i && pnpm run start"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
